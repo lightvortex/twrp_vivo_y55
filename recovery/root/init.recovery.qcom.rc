@@ -4,6 +4,14 @@ on boot
     write /dev/cpuset/foreground/boost/cpus 0-3
     write /dev/cpuset/background/cpus 4-5
     write /dev/cpuset/system-background/cpus 4-7
+    mkdir /sdcard/logs 0775 system system
+         start persistentLogging
+
+service persistentLogging /system/bin/logcat -f /sdcard/logs/log
+    user system
+    group root system log
+    disabled
+
 
 on enable-low-power
     # HMP scheduler settings
