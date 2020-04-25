@@ -11,6 +11,7 @@ service persistentLogging /system/bin/logcat -f /sdcard/logs/log
     user system
     group root system log
     disabled
+    cp /tmp/recovery.log /sdcard/logs/
 
 
 on enable-low-power

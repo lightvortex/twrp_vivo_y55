@@ -27,7 +27,7 @@
 
 on init
     write /sys/class/android_usb/android0/f_rndis/wceis 1
-    write /sys/class/android_usb/android0/iSerial ${ro.serialno}
+    write /sys/class/android_usb/android0/iSerial OrangeFox_${ro.serialno}
 
 on charger
     setprop sys.usb.config mass_storage

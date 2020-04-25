@@ -1,0 +1,2 @@
+add_lunch_combo omni_y55-eng
+add_lunch_combo omni_y55-userdebug

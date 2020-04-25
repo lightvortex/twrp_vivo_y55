@@ -14,8 +14,6 @@
 # limitations under the License.
 #
 
-TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
-
 # Assert
 TARGET_OTA_ASSERT_DEVICE := pd1613,PD1613
 
@@ -26,11 +24,24 @@ TARGET_BOARD_PLATFORM := msm8937
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno505
 
 # Architecture
-TARGET_ARCH := arm
-TARGET_ARCH_VARIANT := armv7-a-neon
-TARGET_CPU_ABI := armeabi-v7a
-TARGET_CPU_ABI2 := armeabi
-TARGET_CPU_VARIANT := cortex-a53
+
+TARGET_ARCH := arm64
+TARGET_CPU_ABI := arm64-v8a
+TARGET_CPU_ABI2 := armeabi-v7a
+TARGET_ARCH_VARIANT := armv8-a
+TARGET_CPU_VARIANT := generic
+
+TARGET_2ND_ARCH := arm
+TARGET_2ND_ARCH_VARIANT := armv7-a-neon
+TARGET_2ND_CPU_ABI := armeabi-v7a
+TARGET_2ND_CPU_ABI2 := armeabi
+TARGET_2ND_CPU_VARIANT := cortex-a53
+
+TARGET_CPU_SMP := true
+
+ARCH_ARM_HAVE_NEON := true
+ARCH_ARM_HAVE_VFP := true
+ARCH_ARM_HAVE_TLS_REGISTER := true
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := MSM8937
@@ -43,40 +54,12 @@ BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x01000000 --tags_offset 0x00000100
 TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/kernel
-# Use prebuilt kernel if defined
-ifeq ($(TARGET_PREBUILT_KERNEL),)
-        LOCAL_KERNEL := device/vivo/y55/kernel
-else
-        TARGET_KERNEL_ARCH := arm
-        BOARD_KERNEL_IMAGE_NAME := zImage-dtb
-        TARGET_KERNEL_APPEND_DTB := true
-        TARGET_KERNEL_CONFIG := lineageos_y55_defconfig
-        TARGET_KERNEL_SOURCE := kernel/vivo/msm8937
-endif
+# Use prebuilt kernel
+TARGET_PREBUILT_KERNEL := device/vivo/y55/kernel
+TARGET_RECOVERY_FSTAB := device/vivo/y55/recovery.fstab
 
 # Charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
-
-# Display
-TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
-TARGET_USES_C2D_COMPOSITION := true
-TARGET_USES_ION := true
-TARGET_USES_OVERLAY := true
-USE_OPENGL_RENDERER := true
-
-
-# Shader cache config options
-# Maximum size of the  GLES Shaders that can be cached for reuse.
-# Increase the size if shaders of size greater than 12KB are used.
-MAX_EGL_CACHE_KEY_SIZE := 12*1024
-
-# Maximum GLES shader cache size for each app to store the compiled shader
-# binaries. Decrease the size if RAM or Flash Storage size is a limitation
-# of the device.
-MAX_EGL_CACHE_SIZE := 2048*1024
-
-HAVE_ADRENO_SOURCE := false
-OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
 
 # Filesystem
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
@@ -87,30 +70,24 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 11003206656
 BOARD_CACHEIMAGE_PARTITION_SIZE := 260046848
 TARGET_USERIMAGES_USE_EXT4 := true
 
-# Init
-TARGET_PLATFORM_DEVICE_BASE := /devices/soc.0/
+# Power
+TARGET_POWERHAL_VARIANT := qcom
 
-# Keymaster
-TARGET_PROVIDES_KEYMASTER := true
-TARGET_KEYMASTER_WAIT_FOR_QSEE := true
+# Qualcomm support
+BOARD_USES_QCOM_HARDWARE := true
 
-# SDCard
-RECOVERY_SDCARD_ON_DATA = true
+# Recovery
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
 
-# Screen
-TARGET_RECOVERY_PIXEL_FORMAT        := "RGBX_8888"
-TW_SCREEN_BLANK_ON_BOOT             := true
-
-# Interface
-TW_THEME                            := portrait_hdpi
-TW_INPUT_BLACKLIST                  := "hbtp_vm" # Disable mouse cursor
-RECOVERY_GRAPHICS_USE_LINELENGTH    := true
-TW_NEW_ION_HEAP                     := true
-
-# Language
-TW_EXTRA_LANGUAGES                  := true
-
-# Misc TWRP
-BOARD_SUPPRESS_SECURE_ERASE         := true # don't take forever to wipe
-BOARD_HAS_NO_SELECT_BUTTON          := true
-TW_INCLUDE_FB2PNG                   := true
+# TWRP 
+TW_THEME := portrait_hdpi
+TARGET_RECOVERY_QCOM_RTC_FIX := true
+# RECOVERY_GRAPHICS_USE_LINELENGTH := true
+TW_INCLUDE_CRYPTO := true
+# TW_SCREEN_BLANK_ON_BOOT := true
+TW_EXCLUDE_DEFAULT_USB_INIT := true
+TW_EXCLUDE_SUPERSU := true
+TW_EXTRA_LANGUAGES := true
+TW_INCLUDE_NTFS_3G := true
+TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"

@@ -17,6 +17,8 @@
 # Release name
 PRODUCT_RELEASE_NAME := y55
 
+PRODUCT_AAPT_CONFIG := normal
+PRODUCT_AAPT_PREF_CONFIG := xhdpi
 $(call inherit-product, build/target/product/embedded.mk)
 
 # Inherit from our custom product configuration
